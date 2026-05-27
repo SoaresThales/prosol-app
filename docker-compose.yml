@@ -1,0 +1,36 @@
+services:
+  app:
+    build: .
+    container_name: prosol_app
+    command: npm start
+    ports:
+      - "3000:3000"
+    # Não montar o diretório do projeto no container: usar os artefatos construídos na imagem
+    volumes:
+      - prosol_uploads:/app/uploads
+    environment:
+      - PORT=${PORT}
+      - NODE_ENV=${NODE_ENV}
+      - MONGO_URI=mongodb://${MONGO_ROOT_USER}:${MONGO_ROOT_PASSWORD}@db_mongo:${MONGO_PORT}/${MONGO_DB_NAME}?authSource=admin
+      - PUPPETEER_EXECUTABLE_PATH=${PUPPETEER_EXECUTABLE_PATH}
+    depends_on:
+      - db_mongo
+    restart: always
+
+  db_mongo:
+    image: mongo:6.0
+    container_name: prosol_db
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_USER}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
+    volumes:
+      - mongo_data:/data/db
+    restart: always
+
+volumes:
+  mongo_data:
+    driver: local
+  prosol_uploads:
+    driver: local

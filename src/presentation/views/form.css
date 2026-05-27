@@ -1,0 +1,152 @@
+:root {
+    /* Cores Principais */
+    --primary: #FF9900;
+    --primary-hover: #e68a00;
+    --secondary: #003366;
+    
+    /* Neutras e Fundo */
+    --bg-body: #f4f6f8;
+    --bg-container: #ffffff;
+    --text-main: #333333;
+    --text-muted: #666666;
+    --border-input: #cccccc;
+    --border-light: #eeeeee;
+    --gray-bg: #f9f9f9;
+    --gray-border: #dddddd;
+
+    /* Feedback (Cálculos e Avisos) */
+    --info-bg: #e0f7fa;
+    --info-border: #00acc1;
+    --info-text: #00838f;
+    --warning-bg: #fff3e0;
+    --warning-text: #e65100;
+    --success-bg: #e8f5e9;
+    --success-text: #2e7d32;
+    --success-btn: #2E7D32;
+
+    --shadow: rgba(0, 0, 0, 0.05);
+}
+
+/* Classes Utilitárias */
+.mt-30 { margin-top: 30px; }
+.mt-15 { margin-top: 15px; }
+
+/* Variantes da Resultado Box */
+.resultado-box.warning {
+    background-color: var(--warning-bg);
+    border-left: 4px solid var(--primary);
+}
+
+.highlight-warning {
+    color: var(--warning-text);
+}
+
+/* Container de Preço e Custos */
+.pricing-box {
+    background: var(--gray-bg);
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid var(--gray-border);
+}
+
+/* Estilos de Sucesso (Inputs e Botão) */
+.input-success {
+    background: var(--success-bg) !important;
+    font-weight: bold;
+    color: var(--success-text);
+}
+
+.btn-success {
+    background-color: var(--success-btn);
+}
+.btn-success:hover {
+    background-color: #256b29;
+}
+
+* { 
+    box-sizing: border-box; 
+    font-family: 'Inter', sans-serif; 
+}
+
+body { 
+    background-color: var(--bg-body); 
+    margin: 0; 
+    padding: 40px; 
+    color: var(--text-main); 
+}
+
+.container { 
+    max-width: 800px; 
+    margin: 0 auto; 
+    background: var(--bg-container); 
+    padding: 30px; 
+    border-radius: 12px; 
+    box-shadow: 0 4px 15px var(--shadow); 
+}
+
+h1, h2 { 
+    color: var(--secondary); 
+}
+.form-group { 
+    margin-bottom: 15px; 
+}
+
+label { 
+    display: block; 
+    margin-bottom: 5px; 
+    font-weight: 600; 
+    font-size: 14px; 
+}
+
+input[type="text"], input[type="number"], input[type="url"] { 
+    width: 100%; 
+    padding: 10px; 
+    border: 1px solid var(--border-input); 
+    border-radius: 6px; 
+}
+
+.grid-2 { 
+    display: grid; 
+    grid-template-columns: 1fr 1fr; 
+    gap: 15px; 
+}
+
+.btn { 
+    background-color: var(--primary); 
+    color: white; 
+    border: none; 
+    padding: 12px 20px; 
+    font-size: 16px; 
+    font-weight: bold; 
+    border-radius: 6px; 
+    cursor: pointer; 
+    width: 100%; 
+    margin-top: 20px; 
+    transition: background 0.3s; 
+}
+
+.btn:hover { 
+    background-color: var(--primary-hover); 
+}
+
+#etapa-2 { 
+    display: none; 
+    margin-top: 30px; 
+    padding-top: 30px; 
+    border-top: 2px dashed var(--border-light); 
+}
+
+.resultado-box { 
+    background-color: var(--info-bg); 
+    border-left: 4px solid var(--info-border); 
+    padding: 15px; 
+    margin-bottom: 20px; 
+    border-radius: 4px; 
+}
+
+.resultado-box span { 
+    font-size: 20px; 
+    font-weight: bold; 
+    color: var(--info-text); 
+}
+    

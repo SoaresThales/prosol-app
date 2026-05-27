@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Gerador de Propostas - Pró Sol</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/public/css/form.css">
+</head>
+<body>
+
+<div class="container">
+    <h1>🌞 Gerador de Propostas Pró Sol</h1>
+    
+    <div id="etapa-1">
+        <h2>1. Dados do Cliente e Consumo</h2>
+        <div class="grid-2">
+            <div class="form-group"><label>Nome do Cliente</label><input type="text" id="nome" placeholder="Nome do Cliente"></div>
+            <div class="form-group"><label>Cidade/UF</label><input type="text" id="cidade" placeholder="Cidade/UF"></div>
+        </div>
+        <div class="form-group">
+            <label>URL da Foto da Fachada</label>
+            <input type="url" id="foto" placeholder="URL da Foto da Fachada">
+        </div>
+        
+        <div class="grid-2">
+            <div class="form-group"><label>Consumo Médio Mensal (kWh)</label><input type="number" id="consumo" placeholder="Consumo em kWh"></div>
+            <div class="form-group"><label>Tarifa da Energia (R$/kWh)</label><input type="number" step="0.01" id="tarifa" placeholder="Valor da tarifa"></div>
+        </div>
+
+        <h2 class="mt-30">2. Variáveis de Cálculo e Custos</h2>
+        <div class="grid-2">
+            <div class="form-group"><label>HSP (Horas de Sol Pleno)</label><input type="number" step="0.01" id="hsp" placeholder="4.26 (Curitiba)" oninput="atualizarCalculoKit()"></div>
+            <div class="form-group"><label>Eficiência do Sistema (%)</label><input type="number" id="eficiencia" placeholder="80 (média)" oninput="atualizarCalculoKit()"></div>
+            <div class="form-group"><label>Margem de Lucro (%)</label><input type="number" step="0.1" id="margem" placeholder="32.14" oninput="calcularPrecoFinal()"></div>
+            <div class="form-group"><label>Custo de Instalação/Projetos (R$)</label><input type="number" id="custo-operacional" placeholder="custo da instalação" oninput="calcularPrecoFinal()"></div>
+        </div>
+
+        <button class="btn" onclick="calcularSistema()">Calcular Sistema Necessário</button>
+    </div>
+
+    <div id="etapa-2">
+        <h2>2. Preenchimento do Kit Comercial</h2>
+        <div class="resultado-box warning">
+            Alvo do Cliente: <span id="res-potencia">0</span> kWp | <span id="res-geracao">0</span> kWh/mês<br>
+            <strong class="highlight-warning">Geração REAL do Kit: <span id="res-geracao-kit">0</span> kWh/mês</strong>
+        </div>
+
+        <p><i>Com base na potência acima, preencha os dados do kit escolhido no fornecedor:</i></p>
+        
+        <div class="grid-2 mt-15 pricing-box">
+            <div class="form-group">
+                <label>Custo do Kit no Fornecedor (R$)</label>
+                <input type="number" id="custo-kit" placeholder="Custo do kit no fornecedor" oninput="calcularPrecoFinal()">
+            </div>
+            <div class="form-group">
+                <label>Valor Sugerido de Venda (R$)</label>
+                <input type="number" id="valor-sugerido" class="input-success" readonly>
+            </div>
+        </div>
+
+        <div class="grid-2 mt-15">
+            <div class="form-group"><label>Qtd. Módulos (Un)</label><input type="number" id="mod-qtd" placeholder="Quantidade de módulos" oninput="atualizarCalculoKit()"></div>
+            <div class="form-group"><label>Potência Módulo (W)</label><input type="number" id="mod-pot" placeholder="Potência do módulo" oninput="atualizarCalculoKit()"></div>
+        </div>
+        <div class="grid-2">
+            <div class="form-group"><label>Marca Módulos</label><input type="text" id="mod-marca" placeholder="Marca dos módulos" value="Jinko Solar"></div>
+            <div class="form-group"><label>Marca Inversor</label><input type="text" id="inv-marca" placeholder="Marca do inversor" value="Solis"></div>
+        </div>
+        <div class="grid-2">
+            <div class="form-group"><label>Qtd. Inversores</label><input type="number" id="inv-qtd" placeholder="Quantidade de inversores" value="1"></div>
+            <div class="form-group"><label>Potência Inversor (kW)</label><input type="number" id="inv-pot" placeholder="Potência do inversor" value="5"></div>
+        </div>
+        <div class="grid-2">
+            <div class="form-group"><label>Tipo de Estrutura</label><input type="text" id="est-tipo" placeholder="Tipo de estrutura" value="Telhado Cerâmico"></div>
+            <div class="form-group">
+                <label>Valor Final de Venda (R$)</label>
+                <input type="number" id="valor-final" placeholder="Valor final de venda" value="32000" step="100">
+            </div>
+        </div>
+
+        <button class="btn btn-success" onclick="gerarPDF()">Gerar PDF da Proposta</button>
+    </div>
+</div>
+<script src="/public/js/form-logic.js"></script>
+</body>
+</html>

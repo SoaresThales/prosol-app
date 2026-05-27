@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Proposta Pró Sol - {{client.name}}</title>
+    <style>
+        /* RESET E CONFIGURAÇÃO A4 */
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+
+        body { background: #f0f0f0; }
+        .page {
+            width: 210mm;
+            height: 297mm;
+            background: white;
+            margin: 0 auto;
+            page-break-after: always;
+            position: relative;
+            padding: 20mm;
+            overflow: hidden;
+        }
+        
+        /* CORES DA PRÓ SOL (Substitua pelos seus hexadecimais oficiais) */
+        :root {
+            --primary: #FF9900; /* Laranja Solar */
+            --secondary: #003366; /* Azul Escuro */
+            --text-dark: #333333;
+            --light-gray: #F5F5F5;
+        }
+
+        h1, h2, h3 { color: var(--secondary); }
+        .highlight { color: var(--primary); }
+
+        /* --- PÁGINA 1: CAPA --- */
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20mm; }
+        .logo { max-height: 50px; font-weight: bold; font-size: 24px; color: var(--primary); }
+        .hero { display: flex; gap: 20px; margin-bottom: 20mm; }
+        .hero-text { flex: 1; }
+        .hero-text h1 { font-size: 36px; line-height: 1.1; margin-bottom: 10px; }
+        .hero-image { flex: 1; height: 200px; background-color: var(--light-gray); border-radius: 12px; overflow: hidden; }
+        .hero-image img { width: 100%; height: 100%; object-fit: cover; }
+        
+        /* Cards da Capa */
+        .cards-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+        .card { background: var(--light-gray); padding: 25px; border-radius: 8px; text-align: center; border-bottom: 4px solid var(--primary); }
+        .card-icon { font-size: 24px; margin-bottom: 5px; }
+        .card-title { font-size: 14px; color: #666; text-transform: uppercase; }
+        .card-value { font-size: 22px; font-weight: bold; color: var(--secondary); margin-top: 5px; }
+        .card-icon i, .benefit-icon i {color: var(--primary);}
+
+        /* --- PÁGINA 2: BENEFÍCIOS --- */
+        .benefits-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 20mm; }
+        .benefit-item { display: flex; align-items: flex-start; gap: 15px; }
+        .benefit-icon { font-size: 30px; }
+        
+        .flow-section { margin-top: 40mm; background: var(--secondary); color: white; padding: 20px; border-radius: 12px; text-align: center; }
+        .flow-arrows { margin: 20px 0; display: flex; justify-content: center; }
+        .flow-arrows img { width: 100%; max-width: 170mm; height: auto; }
+
+        /* --- PÁGINA 3: DIMENSIONAMENTO --- */
+        .tech-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 5mm; }
+        .tech-card { background: var(--light-gray); padding: 12px; border-radius: 8px; text-align: center; border-bottom: 3px solid var(--primary); }
+        .tech-card-icon { font-size: 22px; margin-bottom: 5px; color: var(--primary); }
+        .tech-card-label { font-size: 10px; color: #666; text-transform: uppercase; display: block; margin-bottom: 2px; }
+        .tech-card-value { font-size: 13px; font-weight: bold; color: var(--secondary); }
+
+        .tech-chart-full { width: 100%; margin-top: 12mm; }
+        .tech-chart-full h3 { margin-bottom: 10px; font-size: 16px; border-left: 4px solid var(--primary); padding-left: 10px; }
+        .chart-container { height: 280px; width: 100%; }
+
+        .badges { display: flex; gap: 10px; margin-top: 30mm; justify-content: center; }
+        .badge { background: #e0f7fa; color: #006064; padding: 5px 15px; border-radius: 20px; font-size: 12px; font-weight: bold; }
+
+        /* --- PÁGINA 4: FECHAMENTO --- */
+        .investment-box { background: var(--secondary); color: white; text-align: center; padding: 25px 15px; border-radius: 12px; margin-top: 10px; }
+        .price { font-size: 100px; font-weight: bold; color: var(--primary); margin: 5px 0; line-height: 1; letter-spacing: -4px; }
+        .checklist { margin-top: 30px; column-count: 2; column-gap: 40px; }
+        .checklist-item { margin-bottom: 15px; display: flex; align-items: center; gap: 10px; font-size: 16px; }
+        
+        .footer-info { display: flex; justify-content: space-between; margin-top: 15mm; border-top: 2px solid #eee; padding-top: 20px; }
+        .contact-btn { display: block; width: 100%; text-align: center; background: #25D366; color: white; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 18px; margin-top: 30px; text-decoration: none; }
+        .checklist-item {margin-bottom: 15px; display: flex; align-items: center; gap: 10px; font-size: 16px; color: var(--text-dark);}
+        .checklist-item i { color: #2E7D32; font-size: 18px;}
+
+        .gallery-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 10mm; }
+        .gallery-item { height: 130px; border-radius: 8px; overflow: hidden; background: var(--light-gray); border: 1px solid #ddd; }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; }
+
+        .guarantee-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 10px; }
+        .guarantee-card { background: var(--light-gray); padding: 15px; border-radius: 10px; box-shadow: 0 6px 15px rgba(0,0,0,0.05); border-top: 4px solid var(--primary); text-align: center; }
+        .guarantee-card strong { display: block; font-size: 12px; text-transform: uppercase; color: #666; margin-bottom: 5px; }
+        .guarantee-card span { font-size: 22px; font-weight: bold; color: var(--secondary); }
+
+        /* Rodapé Global */
+        .global-footer { position: absolute; bottom: 20mm; left: 20mm; right: 20mm; font-size: 10px; color: #999; display: flex; justify-content: space-between; border-top: 1px solid #eee; padding-top: 10px; }
+    </style>
+</head>
+<body>
+
+    <div class="page">
+        <div class="header">
+            <div class="logo">
+                <img src="{{document.companyLogo}}" alt="Pró Sol Energia Solar" style="max-height: 50px; width: auto;">
+            </div>
+            <div style="text-align: right; color: var(--secondary);">
+                <strong>PROPOSTA TÉCNICO-COMERCIAL</strong><br>
+                SISTEMA FOTOVOLTAICO
+            </div>
+        </div>
+
+        <div class="hero">
+            <div class="hero-text">
+                <h1>Sua casa gerando a própria energia.</h1>
+                <p>Economize energia pelos próximos 25 anos.</p>
+            </div>
+            <div class="hero-image">
+                <img src="{{client.coverImagePath}}" alt="Foto do local">
+            </div>
+        </div>
+
+        <div class="cards-grid">
+            <div class="card">
+                <div class="card-icon"><i class="fa-solid fa-bolt"></i></div>
+                <div class="card-title">Geração Média</div>
+                <div class="card-value">{{executiveSummary.averageGenerationKwh}} kWh/mês</div>
+            </div>
+            <div class="card">
+                <div class="card-icon"><i class="fa-solid fa-piggy-bank"></i></div>
+                <div class="card-title">Economia Mensal</div>
+                <div class="card-value">{{formatBrl executiveSummary.monthlySavingsBrl}}</div>
+            </div>
+            <div class="card">
+                <div class="card-icon"><i class="fa-solid fa-chart-line"></i></div>
+                <div class="card-title">Retorno (Payback)</div>
+                <div class="card-value">{{executiveSummary.paybackYears}} anos</div>
+            </div>
+            <div class="card">
+                <div class="card-icon"><i class="fa-solid fa-solar-panel"></i></div>
+                <div class="card-title">Potência do Sistema</div>
+                <div class="card-value">{{executiveSummary.systemPowerKwp}} kWp</div>
+            </div>
+        </div>
+
+        <div class="global-footer">
+            <span>Cliente: {{client.name}} • {{client.city}}/{{client.state}}</span>
+            <span>Nº Proposta: {{document.proposalNumber}} • Data: {{document.date}}</span>
+        </div>
+    </div>
+
+    <div class="page">
+        <h2>Por que investir em <span class="highlight">Energia Solar?</span></h2>
+        
+        <div class="benefits-grid">
+            <div class="benefit-item">
+                <div class="benefit-icon"><i class="fa-solid fa-file-invoice-dollar"></i></div>
+                <div>
+                    <strong>Reduza sua conta de luz</strong>
+                    <p>Economize até 95% na sua fatura de energia imediatamente após a ativação.</p>
+                </div>
+            </div>
+            <div class="benefit-item">
+                <div class="benefit-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                <div>
+                    <strong>Proteção contra a inflação</strong>
+                    <p>Fique imune aos aumentos tarifários e bandeiras vermelhas da concessionária.</p>
+                </div>
+            </div>
+            <div class="benefit-item">
+                <div class="benefit-icon"><i class="fa-solid fa-house-chimney"></i></div>
+                <div>
+                    <strong>Valorização do imóvel</strong>
+                    <p>Imóveis com sistema solar próprio são mais atrativos e valorizados no mercado.</p>
+                </div>
+            </div>
+            <div class="benefit-item">
+                <div class="benefit-icon"><i class="fa-solid fa-leaf"></i></div>
+                <div>
+                    <strong>Energia Sustentável</strong>
+                    <p>Gere energia limpa, renovável e contribua para o meio ambiente.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="flow-section">
+            <h3>Como funciona o sistema on-grid?</h3>
+            <div class="flow-arrows">
+                <img src="{{document.flowImagePath}}" alt="Fluxo do Sistema Solar On-Grid">
+            </div>
+            <p>O sistema gera energia durante o dia e injeta o excedente na rede da concessionária,<br>gerando créditos para uso noturno ou em dias chuvosos.</p>
+        </div>
+
+        <div class="global-footer">
+            <span>Cliente: {{client.name}} • {{client.city}}/{{client.state}}</span>
+            <span>Nº Proposta: {{document.proposalNumber}} • Data: {{document.date}}</span>
+        </div>
+    </div>
+
+    <div class="page">
+        <h2>Dimensionamento Técnico</h2>
+        
+        <div class="tech-grid">
+            <div class="tech-card">
+                <div class="tech-card-icon"><i class="fa-solid fa-bolt"></i></div>
+                <span class="tech-card-label">Potência Total</span>
+                <div class="tech-card-value">{{executiveSummary.systemPowerKwp}} kWp</div>
+            </div>
+            <div class="tech-card">
+                <div class="tech-card-icon"><i class="fa-solid fa-solar-panel"></i></div>
+                <span class="tech-card-label">Módulos</span>
+                <div class="tech-card-value">{{technicalDetails.modulesCount}}x {{technicalDetails.modulePowerW}}W</div>
+            </div>
+            <div class="tech-card">
+                <div class="tech-card-icon"><i class="fa-solid fa-microchip"></i></div>
+                <span class="tech-card-label">Inversor</span>
+                <div class="tech-card-value">{{technicalDetails.inverterPowerKw}}kW ({{technicalDetails.inverterBrand}})</div>
+            </div>
+            <div class="tech-card">
+                <div class="tech-card-icon"><i class="fa-solid fa-ruler-combined"></i></div>
+                <span class="tech-card-label">Área Necessária</span>
+                <div class="tech-card-value">{{technicalDetails.requiredAreaSqm}} m²</div>
+            </div>
+            <div class="tech-card">
+                <div class="tech-card-icon"><i class="fa-solid fa-weight-hanging"></i></div>
+                <span class="tech-card-label">Peso Estrutural</span>
+                <div class="tech-card-value">{{technicalDetails.structuralWeightKgSqm}} kg/m²</div>
+            </div>
+            <div class="tech-card">
+                <div class="tech-card-icon"><i class="fa-solid fa-mound"></i></div>
+                <span class="tech-card-label">Estrutura</span>
+                <div class="tech-card-value">{{technicalDetails.structureMaterial}}</div>
+            </div>
+        </div>
+
+        <div class="tech-chart-full">
+            <h3>Economia Acumulada (25 Anos)</h3>
+            <div class="chart-container">
+                <canvas id="savingsChart"></canvas>
+            </div>
+        </div>
+
+        <div style="margin-top: 15mm; display: flex; flex-direction: column; gap: 15px;">
+            <div style="text-align: left;">
+                <span class="badge">Equipamentos Tier 1</span>
+                <p style="font-size: 13px; color: #555; margin-top: 8px; line-height: 1.5;">Marcas globais líderes de mercado com máxima solidez financeira. Garante que o fabricante existirá por décadas para honrar o suporte e as garantias do seu sistema.</p>
+            </div>
+            <div style="text-align: left;">
+                <span class="badge">Monitoramento Wi-Fi</span>
+                <p style="font-size: 13px; color: #444; margin-top: 8px; line-height: 1.5;">Aplicativo exclusivo para acompanhar a geração de energia em tempo real pelo celular. Permite controlar suas economias e identificar falhas instantaneamente de onde estiver.</p>
+            </div>
+            <div style="text-align: left;">
+                <span class="badge">Garantia de Performance</span>
+                <p style="font-size: 13px; color: #444; margin-top: 8px; line-height: 1.5;">Compromisso de que os painéis manterão alta eficiência de geração por 25 anos. Assegura o retorno do seu investimento ao longo de toda a vida útil do sistema.</p>
+            </div>
+        </div>
+
+        <div class="global-footer">
+            <span>Cliente: {{client.name}} • {{client.city}}/{{client.state}}</span>
+            <span>Nº Proposta: {{document.proposalNumber}} • Data: {{document.date}}</span>
+        </div>
+    </div>
+
+    <div class="page">
+        <h2>Resumo do <span class="highlight">Investimento</span></h2>
+
+        <div class="investment-box">
+            <h3>Investimento Total</h3>
+            <div class="price">{{formatBrl commercial.totalInvestmentBrl}}</div>
+            <p>Formas de pagamento sob consulta (Financiamento bancário disponível).</p>
+        </div>
+
+        <div class="checklist">
+            <div class="checklist-item"><i class="fa-solid fa-circle-check"></i> Projeto Elétrico</div>
+            <div class="checklist-item"><i class="fa-solid fa-circle-check"></i> Instalação Completa</div>
+            <div class="checklist-item"><i class="fa-solid fa-circle-check"></i> Estruturas de Fixação</div>
+            <div class="checklist-item"><i class="fa-solid fa-circle-check"></i> Homologação COPEL</div>
+            <div class="checklist-item"><i class="fa-solid fa-circle-check"></i> Monitoramento Remoto</div>
+            <div class="checklist-item"><i class="fa-solid fa-circle-check"></i> ART e Engenharia</div>
+        </div>
+
+        <div class="gallery-grid">
+            <div class="gallery-item">
+                <img src="{{document.solarImage1}}" alt="Nossas Instalações">
+            </div>
+            <div class="gallery-item">
+                <img src="{{document.solarImage2}}" alt="Nossas Instalações">
+            </div>
+        </div>
+
+        <div class="footer-info">
+            <div>
+                <strong>Prazo Estimado</strong><br>
+                Projeto ➔ Instalação ➔ Homologação<br>
+                <span class="highlight">30 a 40 dias</span>
+            </div>
+        </div>
+
+        <h3 style="margin-top: 8mm; font-size: 14px; color: var(--secondary);">Garantias do Sistema</h3>
+        <div class="guarantee-grid">
+            <div class="guarantee-card">
+                <strong>Módulos</strong>
+                <span>{{technicalDetails.moduleWarranty}}</span>
+            </div>
+            <div class="guarantee-card">
+                <strong>Inversor</strong>
+                <span>{{technicalDetails.inverterWarranty}}</span>
+            </div>
+            <div class="guarantee-card">
+                <strong>Instalação</strong>
+                <span>{{technicalDetails.installationWarranty}}</span>
+            </div>
+        </div>
+
+        <div class="global-footer">
+            <span>Cliente: {{client.name}} • {{client.city}}/{{client.state}}</span>
+            <span>Nº Proposta: {{document.proposalNumber}} • Data: {{document.date}}</span>
+        </div>
+
+        <a href="http://wa.me/5541999088448" class="contact-btn">Fale com nosso especialista pelo WhatsApp</a>
+    </div>
+
+    <script>
+        // Os dados injetados via Handlebars estarão disponíveis aqui
+        const ctx = document.getElementById('savingsChart').getContext('2d');
+        const labelsData = '{{chartData.labels}}'.split(',');
+        const savingsData = '{{chartData.accumulatedSavings}}'.split(',');
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labelsData,
+                datasets: [{
+                    label: 'Economia Acumulada (R$)',
+                    data: savingsData,
+                    backgroundColor: '#FF9900',
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                animation: false, // Desativa animações para renderização imediata no PDF
+                responsive: true,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

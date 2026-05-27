@@ -1,0 +1,24 @@
+{
+  "name": "prosol-solar-proposal",
+  "version": "1.0.0",
+  "description": "Gerador de Propostas Técnicos-Comerciais de Energia Solar",
+  "main": "dist/presentation/http/server.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/presentation/http/server.js",
+    "dev": "ts-node-dev --respawn --transpile-only src/presentation/http/server.ts"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "handlebars": "^4.7.9",
+    "mongoose": "^9.6.2",
+    "puppeteer": "^25.0.4"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.9.1",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^6.0.3"
+  }
+}
